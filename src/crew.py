@@ -18,9 +18,19 @@ def create_smart_contract_analysis_crew(contract_code):
     # CONTRACT RETRIVER TASK
     task1 = tasks.summarize_task(contract_summarizer, contract_code)
     task2 = tasks.analyze_task(function_analyzer, contract_code)
-    task3 = tasks.diagram_task(diagram_creator, task2.expected_output)
-    task4 = tasks.updateable_task(updateability_analyzer, contract_code)
-    task5 = tasks.security_task(security_analyzer, task2.expected_output)
+    task3 = tasks.diagram_task(diagram_creator, contract_code)
+    task4 = tasks.updateable_task(
+    updateability_analyzer,
+    contract_code=contract_code,
+    functions=task2.expected_output
+)
+
+    task5 = tasks.security_task(
+    security_analyzer,
+    contract_code=contract_code,
+    summary=task1.expected_output,
+    functions=task2.expected_output
+)
     task6 = tasks.compiler_task(
         report_compiler,
         contract_code=contract_code,

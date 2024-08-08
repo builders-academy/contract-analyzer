@@ -4,20 +4,20 @@ from textwrap import dedent
 class SmartContractAnalysisTasks:
 
     def summarize_task(self, agent, contract_code):
+        
         return Task(
             description=dedent(f"""
                 Provide a comprehensive summary of the given smart contract's purpose.
                 Contract Code:
                 {contract_code}
-                
                 Your response should be a detailed paragraph providing what the codes and the functions are in the contract.
             """),
-            expected_output="A detailed paragraph explaining the main purpose and functionality of the contract.",
+            expected_output="A detailed paragraph explaining the code.",
             agent=agent,
-            async_execution=False
         )
 
     def analyze_task(self, agent, contract_code):
+        
         return Task(
             description=dedent(f"""
                 Identify all public, private, and read-only functions, summarize them, and indicate if they move funds.
@@ -31,7 +31,9 @@ class SmartContractAnalysisTasks:
             async_execution=True
         )
 
+
     def diagram_task(self, agent, contract_code):
+       
         return Task(
             description=dedent(f"""
                 Create mermaidjs diagrams showing control flow within the contract and between contracts.
@@ -46,37 +48,57 @@ class SmartContractAnalysisTasks:
             async_execution=True
         )
 
-    def updateable_task(self, agent, contract_code):
+    def updateable_task(self, agent, contract_code, functions):
+       
         return Task(
             description=dedent(f"""
                 Assess if any parts of the contract can be updated and by whom.
-                Contract Code:
+                
+                **Contract Code:**
                 {contract_code}
+
+                **Functions Analysis:**
+                {functions}
                 
                 Your response should be a detailed paragraph explaining which parts of the contract are upgradeable, if any, 
-                and who has the authority to make updates.
+                and who has the authority to make updates. Consider the functions analysis to identify any specific functions 
+                that might affect the updatability of the contract.
             """),
-            expected_output="A detailed paragraph explaining which parts of the contract are upgradeable and who can update them.",
+            expected_output="A detailed paragraph explaining which parts of the contract are upgradeable, who can update them, and any related functions.",
             agent=agent,
-            async_execution=True
+            async_execution=False
         )
 
-    def security_task(self, agent, contract_code):
+
+    def security_task(self, agent, contract_code, summary, functions):
         return Task(
             description=dedent(f"""
-                Identify and explain any potential security vulnerabilities in the contract.
-                Contract Code:
-                {contract_code}
+                Conduct a strict and thorough security analysis of the smart contract based on the provided information.
                 
-                Your response should be a detailed paragraph listing and describing each potential vulnerability, 
-                including possible exploits and issues.
+                **Contract Code:**
+                {contract_code}
+
+                **Summary:**
+                {summary}
+
+                **Functions Analysis:**
+                {functions}
+                
+                Your task is to identify and explain any potential security vulnerabilities in the contract. Consider the following aspects:
+                1. Review the contract code for any common vulnerabilities.
+                2. Cross-reference the summary and functional analysis to identify inconsistencies or potential attack vectors.
+                3. Include possible exploits and edge cases that might be overlooked in typical reviews.
+                
+                Your final output should be a detailed report listing and describing each potential vulnerability, including possible exploits, issues, and recommendations for mitigating these risks.
             """),
-            expected_output="A detailed paragraph listing and describing each potential vulnerability, including possible exploits and issues.",
+            expected_output="A detailed security report listing and describing each potential vulnerability, including possible exploits, issues, and recommendations.",
             agent=agent,
-            async_execution=True
+            async_execution=False
         )
 
+
     def compiler_task(self, agent, contract_code, summary, functions, diagrams, updateability, vulnerabilities):
+       
         return Task(
             description=dedent(f"""
                 Compile all analysis into a comprehensive final report.
@@ -106,7 +128,6 @@ class SmartContractAnalysisTasks:
                 4. Control Flow Diagrams
                 5. Updateability Assessment
                 6. Security Analysis
-                7. Recommendations
 
                 Format the report in a clear, professional manner. Use markdown for headings and formatting.
                 Ensure that each section provides valuable insights and is easy to understand.

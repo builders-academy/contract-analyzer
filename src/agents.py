@@ -23,6 +23,7 @@ class SmartContractAnalysisAgents:
     # )
 
     def contract_summarizer_agent(self):
+        print("-----------------RUNNING-SUMMARIZER-------------------")
         return Agent(
             role='contract summarizer',
             goal='Provide a comprehensive summary of the smart contract\'s purpose.',
@@ -35,6 +36,7 @@ class SmartContractAnalysisAgents:
         )
 
     def function_analyzer_agent(self):
+        print("-----------------RUNNING-ANALYZER-------------------")
         return Agent(
             role='function analyzer',
             goal='Identify and summarize all functions in the smart contract.',
@@ -45,6 +47,7 @@ class SmartContractAnalysisAgents:
         )
 
     def diagram_creator_agent(self):
+        print("-----------------CREATING-DIAGRAM-------------------")
         return Agent(
             role='diagram creator',
             goal=' Create mermaidjs diagrams for contract control flow.',
@@ -55,6 +58,7 @@ class SmartContractAnalysisAgents:
         )
     
     def update_analyzer_agent(self):
+        print("-----------------CHECKING-UPDATABILITY-------------------")
         return Agent(
             role='updateability analyzer',
             goal=' Assess if any parts of the contract can be updated and by whom.',
@@ -66,6 +70,7 @@ class SmartContractAnalysisAgents:
         )
     
     def security_analyzer_agent(self):
+        print("-----------------RUNNING-SECURITY-ANALYSIS-------------------")
         return Agent(
             role='security analyzer',
             goal='Identify and explain potential security vulnerabilities in the contract',
@@ -77,6 +82,7 @@ class SmartContractAnalysisAgents:
         )
     
     def report_compiler_agent(self):
+        print("-----------------COMPILING-------------------")
         return Agent(
             role='report compiler',
             goal='Compile all analyses into a comprehensive final report.',

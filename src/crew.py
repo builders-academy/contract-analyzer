@@ -22,23 +22,23 @@ def create_smart_contract_analysis_crew(contract_code):
     task4 = tasks.updateable_task(
     updateability_analyzer,
     contract_code=contract_code,
-    functions=task2.expected_output
+    functions=task2.output
 )
 
     task5 = tasks.security_task(
     security_analyzer,
     contract_code=contract_code,
-    summary=task1.expected_output,
-    functions=task2.expected_output
+    summary=task1.output,
+    functions=task2.output
 )
     task6 = tasks.compiler_task(
         report_compiler,
         contract_code=contract_code,
-        summary=task1.expected_output,
-        functions=task2.expected_output,
-        diagrams=task3.expected_output,
-        updateability=task4.expected_output,
-        vulnerabilities=task5.expected_output
+        summary=task1.output,
+        functions=task2.output,
+        diagrams=task3.output,
+        updateability=task4.output,
+        vulnerabilities=task5.output
     )
 
     crew = Crew(

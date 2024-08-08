@@ -1,6 +1,5 @@
 from textwrap import dedent
 from crewai import Agent
-from crewtools import get_contract
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -10,39 +9,44 @@ os.environ["OPENAI_MODEL_NAME"] = "gpt-4o"
 
 class SmartContractAnalysisAgents:
     # contract_retriver
-    def contract_retriver_agent(self):
-        return Agent(
-            role='Contract Retriever',
-            goal='Retrieve and save the available function  of the smart contract.',
-            tools=[get_contract],
-            backstory=dedent("""
-                You are an expert in blockchain technology and smart contract retrieval."""),
-            verbose=True,
-        )
+    # def contract_retriver_agent(self):
+    #     return Agent(
+    #         role='Contract Retriever and Analyzer',
+    #         goal='Retrieve and analyze the content of smart contract web pages, extracting relevant information from various HTML elements.',
+    #         tools=[get_contract],
+    #         backstory=dedent("""
+    #             You are an expert in blockchain technology, smart contract analysis, and web scraping.
+    #             You know how to extract and interpret information from web pages, focusing on content
+    #             within div, span, and p tags. Your expertise allows you to identify key aspects of
+    #             smart contracts from this extracted information."""),
+    #         verbose=True,
+    # )
 
     def contract_summarizer_agent(self):
         return Agent(
-            role='Contract Summarizer',
-            goal='RProvide a comprehensive summary of the smart contract\'s purpose.',
-            tools=[get_contract],
+            role='contract summarizer',
+            goal='Provide a comprehensive summary of the smart contract\'s purpose.',
+            tools=[],
             backstory=dedent("""
-                You are a blockchain analyst with expertise in understanding smart contract functionality in the Clarity language on the Stacks blockchain."""),
+                You are a blockchain analyst with expertise in understanding smart contract code in the Clarity language."""),
             verbose=True,
+
+            
         )
 
     def function_analyzer_agent(self):
         return Agent(
-            role='Function Analyzer',
+            role='function analyzer',
             goal='Identify and summarize all functions in the smart contract.',
             tools=[],
             backstory=dedent("""
-                You are an expert in blockchain technology and smart contract retrieval."""),
+               You are a smart contract developer with deep knowledge of function analysis in the Clarity language on the Stacks blockchain."""),
             verbose=True,
         )
 
     def diagram_creator_agent(self):
         return Agent(
-            role='Diagram Creator',
+            role='diagram creator',
             goal=' Create mermaidjs diagrams for contract control flow.',
             tools=[],
             backstory=dedent("""
@@ -52,7 +56,7 @@ class SmartContractAnalysisAgents:
     
     def update_analyzer_agent(self):
         return Agent(
-            role='Updateability Analyzer',
+            role='updateability analyzer',
             goal=' Assess if any parts of the contract can be updated and by whom.',
             tools=[],
             backstory=dedent("""
@@ -63,7 +67,7 @@ class SmartContractAnalysisAgents:
     
     def security_analyzer_agent(self):
         return Agent(
-            role='Security Analyzer',
+            role='security analyzer',
             goal='Identify and explain potential security vulnerabilities in the contract',
             tools=[],
             backstory=dedent("""
@@ -74,7 +78,7 @@ class SmartContractAnalysisAgents:
     
     def report_compiler_agent(self):
         return Agent(
-            role='Report Compiler',
+            role='report compiler',
             goal='Compile all analyses into a comprehensive final report.',
             tools=[],
             backstory=dedent("""

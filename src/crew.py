@@ -3,11 +3,11 @@ from crewai import Crew, Process
 from agents import SmartContractAnalysisAgents
 from tasks import SmartContractAnalysisTasks
 
-def create_smart_contract_analysis_crew():
+def create_smart_contract_analysis_crew(contract_code):
     agents = SmartContractAnalysisAgents()
     tasks = SmartContractAnalysisTasks()
 
-    contract_retriever = agents.contract_retriver_agent()
+    # TODO CONTRACT RETRIVER AGENT NEEDS TO BE MADE
     contract_summarizer = agents.contract_summarizer_agent()
     function_analyzer = agents.function_analyzer_agent()
     diagram_creator = agents.diagram_creator_agent()
@@ -15,25 +15,26 @@ def create_smart_contract_analysis_crew():
     security_analyzer = agents.security_analyzer_agent()
     report_compiler = agents.report_compiler_agent()
 
-    task1 = tasks.contract_task(contract_retriever)
-    task2 = tasks.summarize_task(contract_summarizer, task1.expected_output)
-    task3 = tasks.analyze_task(function_analyzer, task1.expected_output)
-    task4 = tasks.diagram_task(diagram_creator, task3.expected_output)
-    task5 = tasks.updateable_task(updateability_analyzer, task1.expected_output)
-    task6 = tasks.security_task(security_analyzer, task3.expected_output)
-    task7 = tasks.compiler_task(
+    # CONTRACT RETRIVER TASK
+    task1 = tasks.summarize_task(contract_summarizer, contract_code)
+    task2 = tasks.analyze_task(function_analyzer, contract_code)
+    task3 = tasks.diagram_task(diagram_creator, task2.expected_output)
+    task4 = tasks.updateable_task(updateability_analyzer, contract_code)
+    task5 = tasks.security_task(security_analyzer, task2.expected_output)
+    task6 = tasks.compiler_task(
         report_compiler,
-        contract_info=task1.expected_output,
-        summary=task2.expected_output,
-        functions=task3.expected_output,
-        diagrams=task4.expected_output,
-        updateability=task5.expected_output,
-        vulnerabilities=task6.expected_output
+        contract_code=contract_code,
+        summary=task1.expected_output,
+        functions=task2.expected_output,
+        diagrams=task3.expected_output,
+        updateability=task4.expected_output,
+        vulnerabilities=task5.expected_output
     )
 
     crew = Crew(
-        agents=[contract_retriever, contract_summarizer, function_analyzer, diagram_creator, updateability_analyzer, security_analyzer, report_compiler],
-        tasks=[task1, task2, task3, task4, task5, task6, task7],
+        agents=[contract_summarizer, function_analyzer, diagram_creator, 
+                updateability_analyzer, security_analyzer, report_compiler],
+        tasks=[task1, task2, task3, task4, task5, task6],
         process=Process.sequential
     )
 
@@ -43,17 +44,17 @@ def create_smart_contract_analysis_crew():
 def main():
     st.title("Smart Contract Analysis")
 
-    url = st.text_input("Enter Smart Contract URL:")
+    contract_code = st.text_area("Enter Smart Contract Code:", height=300)
 
     if st.button("Analyze"):
-        if url:
-            crew = create_smart_contract_analysis_crew()
+        if contract_code:
+            crew = create_smart_contract_analysis_crew(contract_code)
             with st.spinner("Analyzing..."):
-                result = crew.kickoff(inputs={'url': url})
+                result = crew.kickoff()
                 st.success("Analysis complete!")
-                st.write(result)
+                st.markdown(result)
         else:
-            st.error("Please enter a URL.")
+            st.error("Please enter the contract code.")
 
 if __name__ == "__main__":
     main()

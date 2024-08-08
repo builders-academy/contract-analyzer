@@ -14,6 +14,7 @@ class SmartContractAnalysisTasks:
             """),
             expected_output="A detailed paragraph explaining the code.",
             agent=agent,
+            async_execution=False
         )
 
     def analyze_task(self, agent, contract_code):
@@ -28,7 +29,7 @@ class SmartContractAnalysisTasks:
             """),
             expected_output="A detailed paragraph listing and describing each function, its visibility, and whether it moves funds.",
             agent=agent,
-            async_execution=True
+            async_execution=False
         )
 
 
@@ -45,7 +46,7 @@ class SmartContractAnalysisTasks:
             """),
             expected_output="A paragraph describing the control flow and mermaidjs code for two diagrams.",
             agent=agent,
-            async_execution=True
+            async_execution=False
         )
 
     def updateable_task(self, agent, contract_code, functions):

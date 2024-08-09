@@ -26,52 +26,60 @@ class SmartContractAnalysisTasks:
                 Store your analysis in the crew's shared memory with the key 'function_analysis'.
             """),
             expected_output="A detailed paragraph listing and describing each function, its visibility, and whether it moves funds.",
-            agent=agent
+            agent=agent,
+        )
+    
+    def diagram_task(self, agent, contract_code):
+        return Task(
+            description=dedent(f"""
+                Create mermaidjs diagram code showing control flow within the contract and between contracts.
+                {contract_code} 
+                Store your code in the crew's shared memory with the key 'diagram'.
+            """),
+            expected_output="A string containing mermaidjs code for two diagrams.",
+            agent=agent,
         )
 
 
-    def updateable_task(self, agent, contract_code):
+    def updateable_task(self, agent):
         return Task(
             description=dedent(f"""
-                Assess if any parts of the contract can be updated and by whom.      
-                Contract Code:
-                {contract_code}
+                Assess if any parts of the contract can be updated and by whom by checking the function analysis. You can access this from the shared memory with the key 'function_analysis'.
+                               
                 Your response should be a detailed paragraph explaining which parts of the contract are upgradeable, if any, 
                 and who has the authority to make updates. Consider the functions analysis to identify any specific functions 
-                that might affect the updatability of the contract.
+                that might affect the updatability of the contract. 
                 Store your assessment in the crew's shared memory with the key 'updateability'.
             """),
             expected_output="A detailed paragraph explaining which parts of the contract are upgradeable and who can update them.",
             agent=agent,
-            async_execution=False
         )
     
-    def security_task(self, agent, contract_code):
+    def security_task(self, agent):
         return Task(
             description=dedent(f"""
-                Identify and explain any potential security vulnerabilities in the contract.
-                Contract Code:
-                {contract_code}
+                Identify and explain any potential security vulnerabilities in the code 
+                by checking the function analysis. You can access this from the shared memory with the key 'function_analysis'.             
                 Store your analysis in the crew's shared memory with the key 'security_analysis'.
             """),
             expected_output="A list of SecurityVulnerability objects, each containing a description of the vulnerability, potential exploit, and potential issues.",
             agent=agent,
-            async_execution=False
         )
 
-    def compiler_task(self, agent):
+    def compiler_task(self, agent, contract_code):
         return Task(
-            description=dedent("""
+            description=dedent(f"""
+                
                 Compile all the output into a comprehensive final report.
+                1. Display the contract code: {contract_code}
                 Use the following information from the crew's shared memory to create a detailed report:
-
-                1. Summary (Access this from the shared memory with the key 'summary')
-                2. Functions Analysis (Access this from the shared memory with the key 'function_analysis')
-                3. Updateability (Access this from the shared memory with the key 'updateability')
-                4. Security (Acess this from the shared memory with the key 'security_analysis')
-                Ensure you integrate all this information into a cohesive report.
+                2. Summary (Access this from the shared memory with the key 'summary')
+                3. Functions Analysis (Access this from the shared memory with the key 'function_analysis')
+                4. Diagrams (Access this from the shared memory with the key 'diagram')
+                5. Updateability (Access this from the shared memory with the key 'updateability')
+                6. Security (Access this from the shared memory with the key 'security_analysis')
             """),
-            expected_output="A comprehensive final report integrating the summary, function analysis, and updateability assessment of the smart contract.",
+            expected_output="A comprehensive final report integrating all analyses",
             agent=agent,
             async_execution=False
-        )
+    )

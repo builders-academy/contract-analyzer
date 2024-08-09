@@ -77,22 +77,22 @@ def main():
     st.info("Please come back after some time or contact: [Biwas Bhandari](https://x.com/biwasbhandarii) or [Binaya BTC](https://x.com/binaya_btc) to know when it might be up and running.")
 
     # Disable other functionalities
-    st.empty()  # This creates a gap between the message and the disabled content
+    # st.empty()  # This creates a gap between the message and the disabled content
 
-    # The following content is commented out to prevent access
+    # # The following content is commented out to prevent access
  
-    col1, col2 = st.columns([1, 2])
+    # col1, col2 = st.columns([1, 2])
 
-    with col1:
-        st.header("Input")
-        with st.form("analysis_form"):
-            contract_id = st.text_input("Contract ID", help="Enter the unique identifier for the contract", placeholder="e.g. SP000000000000000000002Q6VF78.pox")
-            contract_name = st.text_input("Contract Name", help="Enter the name of the contract")
-            submitted = st.form_submit_button("Analyze Contract")
+    # with col1:
+    #     st.header("Input")
+    #     with st.form("analysis_form"):
+    #         contract_id = st.text_input("Contract ID", help="Enter the unique identifier for the contract", placeholder="e.g. SP000000000000000000002Q6VF78.pox")
+    #         contract_name = st.text_input("Contract Name", help="Enter the name of the contract")
+    #         submitted = st.form_submit_button("Analyze Contract")
 
-    with col2:
-        st.header("Results")
-        st.warning("It won't work for now.")
+    # with col2:
+    #     st.header("Results")
+    #     st.warning("It won't work for now.")
 
 if __name__ == "__main__":
     main()

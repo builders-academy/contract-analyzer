@@ -25,9 +25,6 @@ in pkgs.mkShell {
     # Activate the virtual environment
     source venv/bin/activate
 
-    # Upgrade pip
-    pip install --upgrade pip
-
     # Install project dependencies (if you have a requirements.txt file)
     # pip install -r requirements.txt
 

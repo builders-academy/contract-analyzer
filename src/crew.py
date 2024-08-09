@@ -2,55 +2,38 @@ import streamlit as st
 from crewai import Crew, Process
 from agents import SmartContractAnalysisAgents
 from tasks import SmartContractAnalysisTasks
+from dotenv import load_dotenv
+from langchain_openai import ChatOpenAI
+
+load_dotenv()
+
+llm = ChatOpenAI(model="gpt-4o")
 
 def create_smart_contract_analysis_crew(contract_code):
     agents = SmartContractAnalysisAgents()
     tasks = SmartContractAnalysisTasks()
 
-    # TODO CONTRACT RETRIVER AGENT NEEDS TO BE MADE
     contract_summarizer = agents.contract_summarizer_agent()
     function_analyzer = agents.function_analyzer_agent()
-    diagram_creator = agents.diagram_creator_agent()
     updateability_analyzer = agents.update_analyzer_agent()
     security_analyzer = agents.security_analyzer_agent()
     report_compiler = agents.report_compiler_agent()
 
-    # CONTRACT RETRIVER TASK
     task1 = tasks.summarize_task(contract_summarizer, contract_code)
     task2 = tasks.analyze_task(function_analyzer, contract_code)
-    task3 = tasks.diagram_task(diagram_creator, contract_code)
-    task4 = tasks.updateable_task(
-    updateability_analyzer,
-    contract_code=contract_code,
-    functions=task2.output
-)
-
-    task5 = tasks.security_task(
-    security_analyzer,
-    contract_code=contract_code,
-    summary=task1.output,
-    functions=task2.output
-)
-    task6 = tasks.compiler_task(
-        report_compiler,
-        contract_code=contract_code,
-        summary=task1.output,
-        functions=task2.output,
-        diagrams=task3.output,
-        updateability=task4.output,
-        vulnerabilities=task5.output
-    )
+    task4 = tasks.updateable_task(updateability_analyzer, contract_code)
+    task5 = tasks.security_task(security_analyzer, contract_code)
+    task6 = tasks.compiler_task(report_compiler)
 
     crew = Crew(
-        agents=[contract_summarizer, function_analyzer, diagram_creator, 
-                updateability_analyzer, security_analyzer, report_compiler],
-        tasks=[task1, task2, task3, task4, task5, task6],
-        process=Process.sequential
+        agents=[contract_summarizer, function_analyzer, updateability_analyzer, report_compiler],
+        tasks=[task1, task2, task4, task5, task6],
+        process=Process.sequential,
+        memory=True
     )
 
     return crew
 
-# Define the Streamlit app
 def main():
     st.title("Smart Contract Analysis")
 

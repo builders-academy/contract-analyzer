@@ -32,14 +32,13 @@ class SmartContractAnalysisTasks:
     def diagram_task(self, agent, contract_code, contract_functions):
         return Task(
             description=dedent(f"""
-                Create mermaidjs showing control flow within the contract and between contracts using the following contract code and functions:
+               Create mermaidjs diagrams showing internal control flow within the contract and between contracts and store it the crew's shared memory with the key 'internal_flow' and 'inter_contract_iteration'.
                 Here's the contract code:
                 {contract_code}
                 and here's its function:
                 {contract_functions} 
-                Return the mermaidjs diagram flow as a string and store it in shared memory 'diagram'.
             """),
-            expected_output="A string containing mermaidjs code for two diagrams: one showing internal control flow and another showing inter-contract interactions",
+            expected_output=" A mermaidjs string diagram for two diagrams: one showing internal control flow and another showing inter-contract interactions",
             agent=agent,
         )
 
@@ -72,10 +71,11 @@ class SmartContractAnalysisTasks:
         return Task(
             description=dedent(f"""
                 Compile all the output into a comprehensive final report.
+                               
                 Use the following information from the crew's shared memory to create a detailed report:
                 1. Summary (Access this from the shared memory with the key 'summary')
                 2. Functions Analysis (Access this from the shared memory with the key 'function_analysis')
-                3. Diagrams (Access this from the shared memory with the key 'diagram') and display the code.
+                3. Control flow diagram (Access this from the shared memory with the key 'internal_flow' and 'inter_contract_iteration') and render it in a way that can be seen in a streamlit app.
                 4. Updateability (Access this from the shared memory with the key 'updateability')
                 5. Security (Access this from the shared memory with the key 'security_analysis')
             """),

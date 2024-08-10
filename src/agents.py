@@ -28,10 +28,10 @@ class SmartContractAnalysisAgents:
     def diagram_creator_agent(self):
         return Agent(
             role='diagram creator',
-            goal='Create mermaidjs diagram for contract control flow as string.',
+            goal='Create mermaidjs diagrams for contract control flow.',
             tools=[function_search_tool],
             backstory=dedent("""
-                You are an expert specializing in creating clear and informative diagram  using mermaidjs."""),
+                You are a visualization expert specializing in creating clear and informative diagrams of smart contract structures in the Clarity language on the Stacks blockchain."""),
             verbose=True,
         )
     

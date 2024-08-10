@@ -47,9 +47,9 @@ def create_smart_contract_analysis_crew(contract_code, contract_functions):
 
     task1 = tasks.summarize_task(contract_summarizer, contract_code)
     task2 = tasks.analyze_task(function_analyzer,  contract_functions)
-    task3 = tasks.diagram_task(diagram_creator,  contract_functions)
+    task3 = tasks.diagram_task(diagram_creator,contract_code,  contract_functions)
     task4 = tasks.updateable_task(updateability_analyzer,  contract_functions)
-    task5 = tasks.security_task(security_analyzer,  contract_functions)
+    task5 = tasks.security_task(security_analyzer, contract_code, contract_functions)
     task6 = tasks.compiler_task(report_compiler)
 
     crew = Crew(
@@ -78,14 +78,14 @@ def main():
             contract_functions = fetch_function(contract_id, contract_name)
         
         if isinstance(contract_code, str) and contract_code.startswith("Error"):
-            st.error(f"Failed to fetch contract code: {contract_code}")
+            st.error(f"Failed to fetchi contract code: {contract_code}")
         elif isinstance(contract_functions, str) and contract_functions.startswith("Error"):
             st.error(f"Failed to fetch contract functions: {contract_functions}")
         else:
             with st.expander("View Contract Code"):
                 st.code(contract_code)
-                st.subheader("Contract Functions")
-                st.code(str(contract_functions))
+                # st.subheader("Contract Functions")
+                # st.code(str(contract_functions))
 
             st.header("Analysis Results")
             try:

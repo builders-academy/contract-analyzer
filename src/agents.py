@@ -1,6 +1,6 @@
 from textwrap import dedent
 from crewai import Agent
-from tools import codeSearchTool, functionSearchTool
+from tools import code_search_tool, function_search_tool
 
 class SmartContractAnalysisAgents:
 
@@ -8,7 +8,7 @@ class SmartContractAnalysisAgents:
         return Agent(
             role='contract summarizer',
             goal='Provide a comprehensive summary of the smart contract\'s purpose.',
-            tools=[codeSearchTool],
+            tools=[code_search_tool],
             backstory=dedent("""
                 You are a blockchain analyst with expertise in understanding smart contract code in the Clarity language."""),
             verbose=True,
@@ -19,7 +19,7 @@ class SmartContractAnalysisAgents:
         return Agent(
             role='function analyzer',
             goal='Identify all functions in the smart contract.',
-            tools=[functionSearchTool],
+            tools=[function_search_tool],
             backstory=dedent("""
                You are a smart contract developer with deep knowledge of function analysis in the Clarity language on the Stacks blockchain."""),
             verbose=True,
@@ -28,10 +28,10 @@ class SmartContractAnalysisAgents:
     def diagram_creator_agent(self):
         return Agent(
             role='diagram creator',
-            goal='Create mermaidjs diagrams for contract control flow and generate.',
-            tools=[functionSearchTool],
+            goal='Create mermaidjs code for contract control flow and generate.',
+            tools=[function_search_tool],
             backstory=dedent("""
-                You are a visualization expert specializing in creating clear and informative diagrams using mermaidjs."""),
+                You are an expert specializing in creating clear and informative codes  using mermaidjs and converting into strings."""),
             verbose=True,
         )
     
@@ -52,7 +52,7 @@ class SmartContractAnalysisAgents:
         return Agent(
             role='security analyzer',
             goal='Identify and explain potential security vulnerabilities in the contract',
-            tools=[functionSearchTool],
+            tools=[function_search_tool],
             backstory=dedent("""
                You are a blockchain security expert with a keen eye for detecting potential vulnerabilities in smart contracts in the Clarity language on the Stacks blockchain.
                
